@@ -16,6 +16,7 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install --system --upgrade --link-mode=copy -r requirements.txt
 
-COPY main.py ./
+COPY app ./app
+
 EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
