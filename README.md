@@ -1,4 +1,4 @@
-# market-data-mcp
+# mcp-market-data
 Market & Options Data MCP ("market-data") — FastAPI server
 
 A deployable, minimal, vendor-pluggable service that exposes endpoints used by an LLM
@@ -15,8 +15,8 @@ Run locally:
 
 Docker:
 ```
-  docker build -t market-data-mcp:edge .
-  docker run -p 8000:8000 --name market-data-mcp market-data-mcp:edge
+  docker build -t mcp-market-data:edge .
+  docker run -p 8000:8000 --name mcp-market-data mcp-market-data:edge
 ```
 
 Example curl:
@@ -30,7 +30,7 @@ Example curl:
 ```
 
 ### Notes
-- Image will publish to `ghcr.io/pishnuke/market-data-mcp:edge` on `master`, plus a `sha-<short>` tag, and to `ghcr.io/pishnuke/market-data-mcp:<tag>` when you push a Git tag like `v0.1.0`.
+- Image will publish to `ghcr.io/pishnuke/mcp-market-data:edge` on `master`, plus a `sha-<short>` tag, and to `ghcr.io/pishnuke/mcp-market-data:<tag>` when you push a Git tag like `v0.1.0`.
 - Ensure your repo is **public** or that consumers have permission to pull from GHCR. For private repos, consumers need a token.
 - The GHCR repository name is lowercase; if your GitHub org/repo has uppercase, GHCR normalizes it.
 

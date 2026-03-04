@@ -1,6 +1,6 @@
 
 {
-  "name": "market-data",
+  "name": "mcp-market-data",
   "version": "0.1.0",
   "description": "Market & Options Data MCP over HTTP (FastAPI)",
   "transport": {
