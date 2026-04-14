@@ -5,8 +5,11 @@
     },
     "market-data-local": {
       "command": "uvicorn",
-      "args": ["main:app", "--host", "127.0.0.1", "--port", "8000"],
-      "env": {"DATA_DIR": "./data"}
+      "args": ["app.main:app", "--host", "127.0.0.1", "--port", "8000"],
+      "env": {
+        "DATA_DIR": "./data",
+        "LAMA_UI_SERVICE_URL": "http://127.0.0.1:8502"
+      }
     }
   }
 }

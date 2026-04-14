@@ -7,10 +7,13 @@ assemble a training dataset with alignment/caching. Uses yfinance as a default
 provider so it runs out-of-the-box; swap in Polygon/IEX/etc by implementing the
 DataProvider interface below.
 
+It can also proxy the lama option-dataset chart service when `LAMA_UI_SERVICE_URL`
+is configured.
+
 Run locally:
 ```
   pip install -r requirements.txt
-  uvicorn main:app --host 0.0.0.0 --port 8000
+  uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
 Docker:
@@ -22,11 +25,18 @@ Docker:
 Example curl:
 ```
   curl "https://market-data.verumnomen.com/get_ohlcv?symbol=AAPL&timeframe=1d&start=2024-01-01&end=2024-06-30"
+  curl "https://market-data.verumnomen.com/get_lama_option_chart?strategy_type=RET3&option_ticker=AAPL250117C00200000"
   curl -X POST https://market-data.verumnomen.com/make_dataset -H 'Content-Type: application/json' -d '{
     "symbols":["AAPL","NVDA"],
     "features":["ohlcv(1d,120d)","rv_park(5d)","ret_1d","iv30"],
     "horizon":"1d","window":"180d","align":"market_close"
   }'
+```
+
+To enable the lama proxy endpoint:
+
+```bash
+export LAMA_UI_SERVICE_URL="https://your-lama-ui-service.example.com"
 ```
 
 ### Notes
