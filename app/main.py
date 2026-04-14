@@ -4,9 +4,6 @@ import os, io, json, math, time, hashlib, sqlite3, contextlib, pathlib
 from datetime import datetime, timedelta, timezone
 from tempfile import gettempdir
 from typing import List, Optional, Dict, Any
-from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
 
 import numpy as np
 import pandas as pd
@@ -261,41 +258,9 @@ class DatasetOut(BaseModel):
 # ------------------------------
 app = FastAPI(title="market-data MCP", version="0.1.0")
 
-
-def get_lama_ui_service_url() -> str:
-    return os.environ.get("LAMA_UI_SERVICE_URL", "").rstrip("/")
-
 @app.get("/health")
 def health():
     return {"ok": True, "now": PROVIDER.now().isoformat()}
-
-
-@app.get("/get_lama_option_chart")
-def get_lama_option_chart(
-    strategy_type: str = Query(..., pattern="^(LEGACY|RET3|COVERED_CALLS)$"),
-    option_ticker: str = Query(...),
-):
-    lama_ui_service_url = get_lama_ui_service_url()
-    if not lama_ui_service_url:
-        raise HTTPException(503, "LAMA_UI_SERVICE_URL is not configured")
-
-    query = urlencode({
-        "strategy_type": strategy_type,
-        "option_ticker": option_ticker,
-    })
-    url = f"{lama_ui_service_url}/api/option-chart?{query}"
-    request = Request(url, headers={"Accept": "application/json"})
-
-    try:
-        with urlopen(request, timeout=20) as response:
-            payload = json.loads(response.read().decode())
-    except HTTPError as exc:
-        detail = exc.read().decode() if hasattr(exc, "read") else str(exc)
-        raise HTTPException(exc.code, detail or "lama UI service returned an error") from exc
-    except URLError as exc:
-        raise HTTPException(502, f"Could not reach lama UI service: {exc.reason}") from exc
-
-    return payload
 
 @app.get("/get_ohlcv", response_model=List[OHLCVOut])
 def get_ohlcv(symbol: str = Query(...), timeframe: str = Query("1d"), start: Optional[str] = None, end: Optional[str] = None, adj: bool = True):

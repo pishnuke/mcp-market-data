@@ -9,15 +9,6 @@
   },
   "tools": [
     {
-      "name": "get_lama_option_chart",
-      "method": "GET",
-      "path": "/get_lama_option_chart",
-      "params": {
-        "strategy_type": {"type": "string", "enum": ["LEGACY", "RET3", "COVERED_CALLS"]},
-        "option_ticker": "string"
-      }
-    },
-    {
       "name": "get_ohlcv",
       "method": "GET",
       "path": "/get_ohlcv",
